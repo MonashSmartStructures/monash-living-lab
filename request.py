@@ -2,7 +2,7 @@ import os
 import urllib3
 import logging
 import http.client as http_client
-from datetime import datetime
+
 from webservice import WebServices
 from open_tdms import TDMS
 import requests
@@ -41,12 +41,9 @@ class MonashLivingLab:
         self.files = [file["properties"]["Name"] for file in self.available_files["availableFiles"]]
         self.file_id = [file["id"] for file in self.available_files["availableFiles"]]
 
-    def create_service(self):
-        """Create the webService object for Monash Living Lab's NI systemlink"""
-        # Create the webService object
-        webServices = WebServices(self.host_url)
-        webServices.set_usr_pwd(username, password)  # From configuration file
-        return webServices
+        # get all tags
+
+        # get all channels
 
     def get_tdms_file(self, filename):
         """Download tdms file
@@ -83,7 +80,7 @@ class MonashLivingLab:
         """
 
         if self.download_filename is None:
-            name = file_id+".tdms"
+            name = file_id + ".tdms"
         else:
             name = self.download_filename
 
@@ -93,9 +90,17 @@ class MonashLivingLab:
 
 
 if __name__ == '__main__':
+    # file to download
     file_name = '202402181520_SHM-8.tdms'  # file to download
+
+    # create main wrapper API object
     downloader = MonashLivingLab()
+
+    # download
     downloader.get_tdms_file(filename=file_name)
+
+    # read data
+    td_data = TDMS(file_name)
 
     # Http API to use
     path = "SHM-1.WALK-3-Z"  # tag to query
