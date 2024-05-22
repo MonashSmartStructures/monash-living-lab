@@ -3,17 +3,19 @@ import numpy as np
 
 class TDMS:
     """Class to read tdms files """
+
     def __init__(self, filename: str):
         self.filename = filename
 
-        # reads
-        self._read()
+        # read tdms
+        self._extract_tdms()
 
-    def _read(self):
+    def _extract_tdms(self):
         """Extract data from tdms file"""
 
         channels = {}
         properties = {}
+        channel_names =[]
 
         tdms_file = TdmsFile.read(self.filename)
         for group in tdms_file.groups():
@@ -25,25 +27,21 @@ class TDMS:
                 # Access numpy array of data for channel:
                 data = channel[:]
                 channels[channel_name] = data
-
+                channel_names.append(channel_name)
         # ref start time and increment (all channels same timestamp)
         start_time = channel.properties["wf_start_time"]
         increment = channel.properties["wf_increment"]
         num_increments = len(data)
 
-        # Typical sampling interval is 0.0018 seconds
-        timedelta = np.timedelta64(int(increment*1e6),'us')
+        # Typical sampling interval = 0.0018 seconds
+        timedelta = np.timedelta64(int(increment * 1e6), 'us') # convert to timedelta64 object
 
         # create time stamp array
         self.time_stamp = [start_time + i * timedelta for i in range(num_increments)]
-
-        # store
+        self.channel_names = channel_names
         self.data = channels
         self.properties = properties
-        print("done")
-
-    def create_time_stamp(self):
-        ...
+        print("Read successful file - {}".format(self.filename))
 
 
 if __name__ == '__main__':

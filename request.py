@@ -1,12 +1,7 @@
-import os
 import urllib3
-import logging
-import http.client as http_client
-
 from webservice import WebServices
 from open_tdms import TDMS
-import requests
-from configuration import configuration, username, password
+from configuration import username, password
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -23,7 +18,7 @@ def create_service():
 
 
 class MonashLivingLab:
-    """Wrapper for Monash Living Lab's NI Systemlink API """
+    """API Wrapper for Monash Living Lab's NI Systemlink """
 
     def __init__(self):
         # init var
@@ -102,27 +97,3 @@ if __name__ == '__main__':
     # read data
     td_data = TDMS(file_name)
 
-    # Http API to use
-    path = "SHM-1.WALK-3-Z"  # tag to query
-
-    # download general
-    url = "/nifile/v1/service-groups/Default/files/{}/data".format(2)  # To download files
-    # tag = webServices.get_route(url)
-
-    # tag general
-    url = "/nitag"  # For tag
-    get_tag = "/v2/tags/{}/values".format(path)
-    # tag = webServices.get_route(url+get_tag)
-
-    # tag api
-    url = "/nifile"  # for files
-    get_tag = "/v1/service-groups"
-    # get tag
-    # tag = webServices.get_route(url + get_tag)
-    # print(tag.json())
-
-    # download example
-    # download = webServices.get_route("/nifile/v1/service-groups/Default/files/65c5763c4702427ecc90992a/data")
-    # open("downtest.tdms","wb").write(download.content)
-
-    print("done")
