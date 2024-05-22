@@ -1,6 +1,6 @@
 import urllib3
 from webservice import WebServices
-from open_tdms import TDMS
+from tdms_reader import TDMS
 from configuration import username, password
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -36,9 +36,7 @@ class MonashLivingLab:
         self.files = [file["properties"]["Name"] for file in self.available_files["availableFiles"]]
         self.file_id = [file["id"] for file in self.available_files["availableFiles"]]
 
-        # get all tags
-
-        # get all channels
+        #TODO add more features
 
     def get_tdms_file(self, filename):
         """Download tdms file

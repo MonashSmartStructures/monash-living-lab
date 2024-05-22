@@ -1,5 +1,4 @@
 from nisystemlink.clients.core import HttpConfiguration
-# from nisystemlink.clients.tag import DataType, TagManager
 import json
 
 with open('cred.json') as f:
