@@ -46,7 +46,7 @@ class TDMS:
 
 if __name__ == '__main__':
     # have the tdms or path to tdms
-    tdms_data = TDMS("202402181520_SHM-8.tdms")
+    tdms_data = TDMS("../../202402181520_SHM-8.tdms")
 
     # do stuff with data
     tdms_data.data

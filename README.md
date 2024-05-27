@@ -22,9 +22,9 @@ and run as follows:
 ```
 file_name = '202402181520_SHM-8.tdms'  
 
-downloader = MonashLivingLab() 
+manager = MonashLivingLab() 
 
-downloader.get_tdms_file(file_name)
+manager.get_tdms_file(file_name)
 
 ```
 
