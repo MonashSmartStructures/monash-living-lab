@@ -1,6 +1,8 @@
 import urllib3
 from webservice import WebServices
 from tdms_reader import TDMS
+import ast
+import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -24,7 +26,9 @@ class MonashLivingLab:
         self.files = [file["properties"]["Name"] for file in self.available_files["availableFiles"]]
         self.file_id = [file["id"] for file in self.available_files["availableFiles"]]
 
-        # TODO add more features
+        # get all available tags
+        #available_tag =
+
 
         print("Connection established")
 
@@ -34,6 +38,54 @@ class MonashLivingLab:
         webServices.set_usr_pwd(usn, pw)
 
         return webServices
+
+    def get_tag_values(self, tagname:str):
+        """Returns the tag history values
+
+        Parameter
+        ---------
+        tagname: str
+            Name of the tag
+
+        """
+
+        url = "/nitag/v2/tags-with-values/{path}".format(path=tagname)
+        response = self.webService.get_route(url) # byte object
+        return json.loads(response.content.decode('utf-8'))
+
+    def get_tag_history(self, request_body=None):
+        """Returns the tag history between a given start and end time
+
+        Parameter
+        ---------
+        request_body: dict
+            The request body - see below for example of request body
+
+        Examples
+        --------
+        {
+            "path": "system1.tag1",
+            "workspace": "0c80cf49-54e9-4e92-b117-3bfa574caa84",
+            "startTime": "2018-09-04T18:45:08Z",
+            "endTime": "2018-09-04T18:45:08Z",
+            "take": 1,
+            "continuationToken": "string",
+            "sortOrder": "ASCENDING"
+            }
+
+        Returns
+        -------
+        ValueError if
+        """
+
+        if request_body is None:
+            request_body = ""
+        url = "/nitaghistorian/v2/tags/query-history"
+
+        history = self.webService.post_route(url=url,post_json=request_body)
+
+        return json.loads(history.content.decode('utf-8'))
+
 
     def get_tdms_file(self, filename):
         """Download tdms file

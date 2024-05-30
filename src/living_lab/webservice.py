@@ -16,7 +16,7 @@ class WebServices(object):
             API key
 
         """
-        self.headers = {'x-ni-api-key': api_key}
+        self.headers = {"Content-Type": "application/json"}
         self.auth = ""
 
     def set_usr_pwd(self, username, password):
@@ -28,7 +28,7 @@ class WebServices(object):
         password: str
 
         """
-        self.headers = ""
+        self.headers = {"Content-Type": "application/json",'Accept': "application/json"}
         self.auth = (username, password)
 
     def get_route(self, url):
