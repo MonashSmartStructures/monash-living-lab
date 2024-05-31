@@ -1,6 +1,6 @@
 import urllib3
-from webservice import WebServices
-from tdms_reader import TDMS
+from . import WebServices
+from . import TDMS
 import ast
 import json
 
