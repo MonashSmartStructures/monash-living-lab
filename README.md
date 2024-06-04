@@ -61,7 +61,14 @@ request_body = {
   "endTime": "2024-05-31T05:57:00Z", 
 ```
 
-**_NOTE:_**  As of version 0.1.0, the `startTime` and `endTime` argument needs to be in UTC time zone 
+The data in `tag_history` is presented in a `dict()` with respective "timestamp" and "value" keys,
+which can be access as follows:
+
+```
+data = tag_history["values"]
+```
+
+**_NOTE:_**  As of version 0.1.0, the `startTime` and `endTime` needs to be in UTC time zone and **ISO 8601 format **.
 
 To read a Tag value at the current time:
 
