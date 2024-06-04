@@ -16,7 +16,7 @@ In a Python script, import the entire `monash_living_lab` module :
 from monash_living_lab import *
 ```
 
-To download a certain TDMS file from NI systemlink, simply create the ``MonashLivingLab`` object and
+To download a TDMS file from NI systemlink, simply create the ``MonashLivingLab`` object and
 and run as follows:
 
 ```
@@ -44,5 +44,31 @@ tdms.timestamp # timestamp of raw data
 tdms.properties # dictionary of properties such as sampling intervals
 
 ```
+
+To get a tag history from NI-Systemlink:
+
+```
+tag_history = manager.get_tag_history(request_body=request_body)
+
+```
+
+where `request_body` is a dictionary containing the request details of the tag - at a minimum provide the Tag's ``path`` and ``startTime``:
+
+```
+request_body = {
+  "path": "SHM-6.DYN1-10X",
+  "startTime": "2024-05-31T03:57:00Z",
+  "endTime": "2024-05-31T05:57:00Z", 
+```
+
+**_NOTE:_**  As of version 0.1.0, the `startTime` and `endTime` argument needs to be in UTC time zone 
+
+To read a Tag value at the current time:
+
+```
+value = manager.get_tag_values(tagname="SHM-6.DYN1-10X")
+```
+
+
 
 
