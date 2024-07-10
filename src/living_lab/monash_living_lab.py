@@ -10,14 +10,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class MonashLivingLab:
     """API Wrapper for Monash Living Lab's NI Systemlink """
 
-    def __init__(self, username:str, password:str):
-        # init var
+    def __init__(self, username:str=None, password:str=None,apikey:str=None):
+        """Init the wrapper class"""
         self.data = None
         self.download_filename = None
 
         # create Living Lab webservice
         self.host_url = "https://woodside-shm.eng.monash.edu"
-        self.webService = self.create_service(username, password)
+        self.webService = self.create_service(username, password,apikey)
 
         # get available tdms files
         available_file_url = "/nifile/v1/service-groups/Default/files?skip=0&take=0&orderBy=id&orderByDescending=false"
@@ -26,16 +26,27 @@ class MonashLivingLab:
         self.files = [file["properties"]["Name"] for file in self.available_files["availableFiles"]]
         self.file_id = [file["id"] for file in self.available_files["availableFiles"]]
 
-        # get all available tags
-        #available_tag =
-
-
         print("Connection established")
 
-    def create_service(self, usn:str, pw:str):
+    def create_service(self, usn:str=None, pw:str=None,apikey:str=None):
+        """Creates the WebService object
+
+        Parameters
+        ----------
+        usn: str
+            Username
+        pw: str
+            Password
+        apikey: str, optional
+            API key - if provided, webservice is supplied with API key instead of username and password
+        """
         # Create the webService object
         webServices = WebServices(self.host_url)
-        webServices.set_usr_pwd(usn, pw)
+
+        if apikey:
+            webServices.set_api_key(api_key=apikey)
+        else:
+            webServices.set_usr_pwd(usn, pw)
 
         return webServices
 
