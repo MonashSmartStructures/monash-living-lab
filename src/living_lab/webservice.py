@@ -3,6 +3,7 @@ import requests
 
 class WebServices(object):
     """Class to create web service request"""
+
     def __init__(self, host_url="", session=None):
         self.host_url = host_url
         self.session = session if session != None else requests.Session()
@@ -16,7 +17,7 @@ class WebServices(object):
             API key
 
         """
-        self.headers = {"Content-Type": "application/json"}
+        self.headers ={'x-ni-api-key':api_key, 'Content-Type':'application/json'}
         self.auth = ""
 
     def set_usr_pwd(self, username, password):
@@ -28,7 +29,7 @@ class WebServices(object):
         password: str
 
         """
-        self.headers = {"Content-Type": "application/json",'Accept': "application/json"}
+        self.headers = ""#{"Content-Type": "application/json", 'Accept': "application/json"}
         self.auth = (username, password)
 
     def get_route(self, url):
@@ -40,7 +41,7 @@ class WebServices(object):
             The HTTP api url for get command
         """
         print("GET " + self.host_url + url)
-        response = self.session.get(self.host_url + url, json={}, verify=False, auth=self.auth)
+        response = self.session.get(self.host_url + url, json={}, verify=False, headers=self.headers, auth=self.auth)
         print(str(response))
         return response
 

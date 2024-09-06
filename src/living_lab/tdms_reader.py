@@ -1,5 +1,6 @@
 from nptdms import TdmsFile
 import numpy as np
+import pandas as pd
 
 class TDMS:
     """Class to read tdms files """
@@ -42,6 +43,19 @@ class TDMS:
         self.data = channels
         self.properties = properties
         print("Read successful file - {}".format(self.filename))
+
+    def get_csv(self)->None:
+        """Writes the data into a csv file with same filename defined for tdms"""
+        # ensure all columns have same array
+        max_array_len = max([len(array) for array in self.data.values()])
+        # ensure all arrays are same length
+        for channelname,array in self.data.items():
+            if len(array)<max_array_len:
+                # add zero padding to array up to max array length
+                self.data[channelname] = np.pad(array,(0,max_array_len-len(array)))
+        df = pd.DataFrame.from_dict(self.data)
+        df.to_csv("file.csv")
+        print("Write " + self.filename + " to csv - completed")
 
 
 if __name__ == '__main__':
