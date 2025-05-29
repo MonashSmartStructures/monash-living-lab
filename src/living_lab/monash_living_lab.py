@@ -140,4 +140,31 @@ class MonashLivingLab:
         url = "/nifile/v1/service-groups/Default/files/{}/data".format(file_id)
         download = self.webService.get_route(url)
         open(name, "wb").write(download.content)
+    
+    def query_file_by_name(self, filename):
+        """Download tdms file
 
+        Parameter
+        ---------
+        filename:str
+            Name of tdms file
+        """
+        url = "/nifile/v1/service-groups/Default/query-files"
+        query_payload = {
+            "propertiesQuery": [
+                {
+                    "key": "Name",
+                    "operation": "EQUAL",
+                    "value": filename
+                }
+            ]
+        }
+
+        response = self.webService.post_route(url, post_json=query_payload)
+        result = json.loads(response.content.decode('utf-8'))
+        files = result.get("availableFiles", [])
+
+        file_info = files[0]
+        file_id = file_info["id"]
+        self.download_filename = filename
+        self._download(file_id)
